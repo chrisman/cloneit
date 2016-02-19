@@ -20,7 +20,7 @@
         <h1>cloneit</h1>
         <button ng-click="view.showForm = !view.showForm"> <i class="fa fa-plus"></i> Submit Post </button>
         <input type="text" ng-model="view.searchable" placeholder="search">
-        <select ng-model="view.sortBy">
+        <select ng-model="view.sortBy" ng-change="view.order()">
           <option value='-vote' id="sortByVotes" selected=true> Sort by votes
           <option value='title' id="sortByTitle"> Sort by title
           <option value='-time' id="sortByDate"> Sort by newest
@@ -31,6 +31,9 @@
       <div class='row'>
         <form ng-submit="view.submitPost()" name="postForm">
           <label>Title<p><input type="text" ng-model="view.post_title" name="title"  placeholder="post title" required></label>
+          <div class="error" ng-show="postForm.title.$dirty && postForm.title.$invalid">
+            <small class="error" ng-show="postForm.title.$error.required">Post title is required</small>
+          </div>
           <p><label>Author<p><input type="text" ng-model="view.post_author" name="author" ng-minlength=3 placeholder="username" required></label>
           <div class="error" ng-show="postForm.author.$dirty && postForm.author.$invalid">
             <small class="error" ng-show="postForm.author.$error.required">Username is required</small>
@@ -41,6 +44,9 @@
             <small class="error" ng-show="postForm.url.$error.required">URL is required</small>
           </div>
           <p><label>Description<p><input type="text" ng-model="view.post_text" name="text" placeholder="description" required></label>
+          <div class="error" ng-show="postForm.text.$dirty && postForm.text.$invalid">
+            <small class="error" ng-show="postForm.text.$error.required">Description is required</small>
+          </div>
           <p><input type="submit" value="Submit post">
         </form>
       </div>
@@ -53,6 +59,7 @@
               <img ng-src="{{p.url}}" width="200" height="200" alt="" />
             </div>
             <div class="post__content col-xs-8">
+
               <div class="post__header">
                 <h3>{{p.title}} <small> |
                   <span ng-click="view.vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
@@ -67,16 +74,17 @@
                 <span ng-click="showComments = !showComments"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
                 <span ng-click="showCommentForm = !showCommentForm"><i class="fa fa-pencil" ></i> add comment </span>
               </div>
-              <div ng-show="showComments" class="post__comments row" ng-repeat="c in p.comments">
+              <div ng-show="showComments" class="post__comments" ng-repeat="c in p.comments">
                 <li><strong> {{ c.author }} </strong> - {{ c.text }}</li>
               </div> <!-- end post__comments //-->
-              <div ng-show="showCommentForm" class="post__commentform row">
+              <div ng-show="showCommentForm" class="post__commentform">
                 <form ng-submit="view.submitComment(p)">
                   <label>Author<input type="text" ng-model="view.comment_author" placeholder="username" required></label>
                   <label>Text<input type="text" ng-model="view.comment_text" placeholder="comment text" required></label>
                   <input type="submit" value="Submit post">
                 </form>
               </div> <!-- end post__commentform //-->
+
             </div> <!-- end post__content // -->
           </div> <!-- end post // -->
         </main>

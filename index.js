@@ -1,6 +1,6 @@
 var app = angular.module('myapp', ['angularMoment', 'ngAnimate']);
 
-app.controller('mycontroller', function($scope, $rootScope){
+app.controller('mycontroller', function($scope, $filter, $rootScope){
   
   // fixing inheritence //
   $scope.view = {};
@@ -78,6 +78,19 @@ app.controller('mycontroller', function($scope, $rootScope){
   v.vote = function(p, i){
     p.vote += i;
   }
+
+  var orderBy = $filter('orderBy');
+  v.order = function(i) {
+    console.log(i);
+    v.posts = orderBy(v.posts, 'votes', false);
+  }
+  v.order();
+  //$scope.order = function(predicate) {
+  //  $scope.predicate = predicate;
+  //  $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  //  $scope.friends = orderBy($scope.friends, predicate, $scope.reverse);
+  //};
+  //$scope.order('age', true);
 
 });
 
