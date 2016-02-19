@@ -1,6 +1,6 @@
 var app = angular.module('myapp', ['angularMoment']);
 
-app.controller('mycontroller', function($scope){
+app.controller('mycontroller', function($scope, $rootScope){
 
   // initial values //
   $scope.sortBy = 'vote';
