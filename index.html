@@ -4,6 +4,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"> </script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.4/angular-moment.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <!-- styles //-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -16,44 +18,44 @@
       <h1>reddit clone</h1>
       <button ng-click="toggleSubmitForm()"> <i class="fa fa-plus"></i> Submit Post </button>
       <input type="text" ng-model="searchable" placeholder="search">
-      <select>
-        <option> Sort by votes
-        <option> Sort by title
-        <option> Sort by date
+      <select ng-model="sortBy">
+        <option value='vote'> Sort by votes
+        <option value='title'> Sort by title
+        <option value='date'> Sort by date
       </select>
     </header>
     <div ng-show="showForm">
       <form>
         <label> Title
-          <p> <input type="text" ng-model="title">
+          <p> <input type="text" ng-model="post_title" placeholder="post title">
         </label>
         <p>
         <label> Author
-          <p> <input type="text" ng-model="author">
+          <p> <input type="text" ng-model="post_author" placeholder="username">
         </label>
         <p>
         <label> Image URL
-          <p> <input type="text" ng-model="url">
+          <p> <input type="text" ng-model="post_url" placeholder="http://www.example.com/lolwut.gif">
         </label>
         <p>
         <label> Description
-          <p> <input type="text" ng-model="text">
+          <p> <input type="text" ng-model="post_text" placeholder="description">
         </label>
         <p>
-        <input type="submit" value="Submit post">
+        <input ng-click="submitPost()" type="submit" value="Submit post">
       </form>
     </div>
     <main>
-      <div ng-repeat="p in posts | filter:searchable" class="post">
+      <div ng-repeat="p in posts | orderBy:sortBy | filter:searchable" class="post">
         <div class="post__url">
           <img ng-src="{{p.url}}" width="200" height="200" alt="" />
         </div>
         <div class="post__content">
           <div class="post__header">
             {{p.title}} |
-            <i class="fa fa-arrow-up"></i>
-            <i class="fa fa-arrow-down"></i>
-            {{ p.vote }}
+            <span ng-click="vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
+            <span ng-click="vote(p, -1)"><i class="fa fa-arrow-down"></i></span>
+            <span ng-class="{upvoted: p.vote > 0, downvoted: p.vote < 0}">{{ p.vote }}</span>
           </div>
           <div class="post__author">
             {{ p.author }}
@@ -62,9 +64,9 @@
             {{ p.text }}
           </div>
           <div class="post__footer">
-            <i class="fa fa-calendar"></i> date |
-            <span ng-click="toggleComments()"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
-            <span ng-click="toggleCommentForm()"><i class="fa fa-pencil" ></i> add comment </span>
+            <i class="fa fa-calendar"></i> <time am-time-ago="p.time" title={{ p.time | amParse:'HH:mm:ss' }}></time> |
+            <span ng-click="showComments = !showComments"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
+            <span ng-click="showCommentForm = !showCommentForm"><i class="fa fa-pencil" ></i> add comment </span>
           </div>
           <div ng-show="showComments" class="post__comments" ng-repeat="c in p.comments">
             <li> 
@@ -72,18 +74,18 @@
             </li>
           </div> <!-- end post__comments //-->
           <div ng-show="showCommentForm" class="post__commentform">
-            <form>
+            <form ng-submit="submitComment(p)">
               <label> Author
                 <input type="text" ng-model="comment_author" placeholder="username">
               </label>
               <label> Text
-                <input type="text" ng-model="author" placeholder="comment text">
+                <input type="text" ng-model="comment_text" placeholder="comment text">
               </label>
               <input type="submit" value="Submit post">
             </form>
           </div> <!-- end post__commentform //-->
         </div> <!-- end post__content // -->
-      </div>
+      </div> <!-- end post // -->
     </main>
   </body>
 </html>
