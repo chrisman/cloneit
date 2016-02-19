@@ -13,10 +13,8 @@
   </head>
   <body ng-controller="mycontroller">
     <header>
-      <nav class="navbar"></nav>
       <h1>reddit clone</h1>
-      <i class="fa fa-plus"></i>
-      Submit Post
+      <button ng-click="toggleSubmitForm()"> <i class="fa fa-plus"></i> Submit Post </button>
       <input type="text" ng-model="searchable" placeholder="search">
       <select>
         <option> Sort by votes
@@ -24,10 +22,32 @@
         <option> Sort by date
       </select>
     </header>
+    <div ng-show="showForm">
+      <form>
+        <label> Title
+          <p> <input type="text" ng-model="title">
+        </label>
+        <p>
+        <label> Author
+          <p> <input type="text" ng-model="author">
+        </label>
+        <p>
+        <label> Image URL
+          <p> <input type="text" ng-model="url">
+        </label>
+        <p>
+        <label> Description
+          <p> <input type="text" ng-model="text">
+        </label>
+        <p>
+        <input type="submit" value="Submit post">
+      </form>
+    </div>
+
     <main>
       <div ng-repeat="p in posts" class="post">
-        <div class="post__thumbnail">
-          <img ng-src="{{p.thumbnail}}" width="200" height="200" alt="" />
+        <div class="post__url">
+          <img ng-src="{{p.url}}" width="200" height="200" alt="" />
         </div>
         <div class="post__content">
           <div class="post__header">
