@@ -63,8 +63,8 @@
           </div>
           <div class="post__footer">
             <i class="fa fa-calendar"></i> date |
-            <i class="fa fa-comments" ng-click="toggleComments"></i> comments |
-            <i class="fa fa-pencil" ng-click="toggleCommentForm()"></i> add comment
+            <span ng-click="toggleComments()"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
+            <span ng-click="toggleCommentForm()"><i class="fa fa-pencil" ></i> add comment </span>
           </div>
           <div ng-show="showComments" class="post__comments" ng-repeat="c in p.comments">
             <li> 
