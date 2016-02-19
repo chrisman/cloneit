@@ -43,9 +43,8 @@
         <input type="submit" value="Submit post">
       </form>
     </div>
-
     <main>
-      <div ng-repeat="p in posts" class="post">
+      <div ng-repeat="p in posts | filter:searchable" class="post">
         <div class="post__url">
           <img ng-src="{{p.url}}" width="200" height="200" alt="" />
         </div>
@@ -64,10 +63,26 @@
           </div>
           <div class="post__footer">
             <i class="fa fa-calendar"></i> date |
-            <i class="fa fa-comments"></i> comments |
-            <i class="fa fa-pencil"></i> add comment
+            <i class="fa fa-comments" ng-click="toggleComments"></i> comments |
+            <i class="fa fa-pencil" ng-click="toggleCommentForm()"></i> add comment
           </div>
-        </div>
+          <div ng-show="showComments" class="post__comments" ng-repeat="c in p.comments">
+            <li> 
+              <strong> {{ c.author }} </strong> - {{ c.text }}
+            </li>
+          </div> <!-- end post__comments //-->
+          <div ng-show="showCommentForm" class="post__commentform">
+            <form>
+              <label> Author
+                <input type="text" ng-model="comment_author" placeholder="username">
+              </label>
+              <label> Text
+                <input type="text" ng-model="author" placeholder="comment text">
+              </label>
+              <input type="submit" value="Submit post">
+            </form>
+          </div> <!-- end post__commentform //-->
+        </div> <!-- end post__content // -->
       </div>
     </main>
   </body>
