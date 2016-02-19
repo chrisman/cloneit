@@ -53,6 +53,12 @@ app.controller('mycontroller', function($scope, $rootScope){
 
     v.posts.push(obj);
     v.showForm = false;
+    
+    v.post_author = '';
+    v.post_title = '';
+    v.post_url = '';
+    v.post_author = '';
+    v.post_text = '';
   }
 
   v.submitComment = function(p){

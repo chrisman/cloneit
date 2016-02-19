@@ -15,63 +15,72 @@
     <title>greddit</title>
   </head>
   <body ng-controller="mycontroller">
-    <header>
-      <h1>reddit clone</h1>
-      <button ng-click="view.showForm = !view.showForm"> <i class="fa fa-plus"></i> Submit Post </button>
-      <input type="text" ng-model="view.searchable" placeholder="search">
-      <select ng-model="view.sortBy">
-        <option value='-vote' id="sortByVotes"> Sort by votes
-        <option value='title' id="sortByTitle"> Sort by title
-        <option value='-time' id="sortByDate"> Sort by newest
-      </select>
-    </header>
-    <div ng-show="view.showForm">
-      <form ng-submit="view.submitPost()" name="postForm">
-        <label>Title<p><input type="text" ng-model="view.post_title" name="title"  placeholder="post title" required></label>
-        <p><label>Author<p><input type="text" ng-model="view.post_author" name="author" ng-minlength=3 placeholder="username" required></label>
-        <div class="error" ng-show="postForm.author.$dirty && postForm.author.$invalid">
-          <small class="error" ng-show="postForm.author.$error.required">Username is required</small>
-          <small class="error" ng-show="postForm.author.$error.minlength">Usernames must be at least 3 characters long</small>
-        </div>
-        <p><label>Image URL<p><input type="url" ng-model="view.post_url" name="url" placeholder="http://www.example.com/lolwut.gif" required></label>
-        <div class="error" ng-show="postForm.url.$dirty && postForm.url.$invalid">
-          <small class="error" ng-show="postForm.url.$error.required">URL is required</small>
-        </div>
-        <p><label>Description<p><input type="text" ng-model="view.post_text" name="text" placeholder="description" required></label>
-        <p><input type="submit" value="Submit post">
-      </form>
+    <div class="container page-header">
+      <div class="row">
+        <h1>cloneit</h1>
+        <button ng-click="view.showForm = !view.showForm"> <i class="fa fa-plus"></i> Submit Post </button>
+        <input type="text" ng-model="view.searchable" placeholder="search">
+        <select ng-model="view.sortBy">
+          <option value='-vote' id="sortByVotes" selected=true> Sort by votes
+          <option value='title' id="sortByTitle"> Sort by title
+          <option value='-time' id="sortByDate"> Sort by newest
+        </select>
+      </div>
     </div>
-    <main>
-      <div ng-repeat="p in view.posts | orderBy:view.sortBy | filter:view.searchable" class="post">
-        <div class="post__url">
-          <img ng-src="{{p.url}}" width="200" height="200" alt="" />
-        </div>
-        <div class="post__content">
-          <div class="post__header">
-            {{p.title}} |
-            <span ng-click="view.vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
-            <span ng-click="view.vote(p, -1)"><i class="fa fa-arrow-down"></i></span>
-            <span ng-class="{upvoted: p.vote > 0, downvoted: p.vote < 0}">{{ p.vote }}</span>
+    <div class='container' ng-show="view.showForm">
+      <div class='row'>
+        <form ng-submit="view.submitPost()" name="postForm">
+          <label>Title<p><input type="text" ng-model="view.post_title" name="title"  placeholder="post title" required></label>
+          <p><label>Author<p><input type="text" ng-model="view.post_author" name="author" ng-minlength=3 placeholder="username" required></label>
+          <div class="error" ng-show="postForm.author.$dirty && postForm.author.$invalid">
+            <small class="error" ng-show="postForm.author.$error.required">Username is required</small>
+            <small class="error" ng-show="postForm.author.$error.minlength">Usernames must be at least 3 characters long</small>
           </div>
-          <div class="post__author"> {{ p.author }} </div>
-          <div class="post__text"> {{ p.text }} </div>
-          <div class="post__footer">
-            <i class="fa fa-calendar"></i> <time am-time-ago="p.time" title={{ p.time | amParse:'HH:mm:ss' }}></time> |
-            <span ng-click="showComments = !showComments"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
-            <span ng-click="showCommentForm = !showCommentForm"><i class="fa fa-pencil" ></i> add comment </span>
+          <p><label>Image URL<p><input type="url" ng-model="view.post_url" name="url" placeholder="http://www.example.com/lolwut.gif" required></label>
+          <div class="error" ng-show="postForm.url.$dirty && postForm.url.$invalid">
+            <small class="error" ng-show="postForm.url.$error.required">URL is required</small>
           </div>
-          <div ng-show="showComments" class="post__comments" ng-repeat="c in p.comments">
-            <li><strong> {{ c.author }} </strong> - {{ c.text }}</li>
-          </div> <!-- end post__comments //-->
-          <div ng-show="showCommentForm" class="post__commentform">
-            <form ng-submit="view.submitComment(p)">
-              <label>Author<input type="text" ng-model="view.comment_author" placeholder="username" required></label>
-              <label>Text<input type="text" ng-model="view.comment_text" placeholder="comment text" required></label>
-              <input type="submit" value="Submit post">
-            </form>
-          </div> <!-- end post__commentform //-->
-        </div> <!-- end post__content // -->
-      </div> <!-- end post // -->
-    </main>
+          <p><label>Description<p><input type="text" ng-model="view.post_text" name="text" placeholder="description" required></label>
+          <p><input type="submit" value="Submit post">
+        </form>
+      </div>
+    </div>
+
+    <div class='container'>
+        <main>
+          <div ng-repeat="p in view.posts | orderBy:view.sortBy | filter:view.searchable" class="post row">
+            <div class="post__url col-xs-4">
+              <img ng-src="{{p.url}}" width="200" height="200" alt="" />
+            </div>
+            <div class="post__content col-xs-8">
+              <div class="post__header">
+                <h3>{{p.title}} <small> |
+                  <span ng-click="view.vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
+                  <span ng-click="view.vote(p, -1)"><i class="fa fa-arrow-down"></i></span>
+                  <span ng-class="{upvoted: p.vote > 0, downvoted: p.vote < 0}">{{ p.vote }}</span>
+                </small></h3>
+              </div>
+              <div class="post__author"> {{ p.author }} </div>
+              <div class="post__text"> {{ p.text }} </div>
+              <div class="post__footer">
+                <i class="fa fa-calendar"></i> <time am-time-ago="p.time" title={{ p.time | amParse:'HH:mm:ss' }}></time> |
+                <span ng-click="showComments = !showComments"><i class="fa fa-comments" ></i> {{ p.comments.length }} comments </span> |
+                <span ng-click="showCommentForm = !showCommentForm"><i class="fa fa-pencil" ></i> add comment </span>
+              </div>
+              <div ng-show="showComments" class="post__comments row" ng-repeat="c in p.comments">
+                <li><strong> {{ c.author }} </strong> - {{ c.text }}</li>
+              </div> <!-- end post__comments //-->
+              <div ng-show="showCommentForm" class="post__commentform row">
+                <form ng-submit="view.submitComment(p)">
+                  <label>Author<input type="text" ng-model="view.comment_author" placeholder="username" required></label>
+                  <label>Text<input type="text" ng-model="view.comment_text" placeholder="comment text" required></label>
+                  <input type="submit" value="Submit post">
+                </form>
+              </div> <!-- end post__commentform //-->
+            </div> <!-- end post__content // -->
+          </div> <!-- end post // -->
+        </main>
+    </div>
+
   </body>
 </html>
