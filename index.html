@@ -1,0 +1,54 @@
+<html ng-app='myapp'>
+  <head>
+    <!-- scripts //-->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"> </script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <!-- styles //-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="main.css">
+    <title>greddit</title>
+  </head>
+  <body ng-controller="mycontroller">
+    <header>
+      <nav class="navbar"></nav>
+      <h1>reddit clone</h1>
+      <i class="fa fa-plus"></i>
+      Submit Post
+      <input type="text" ng-model="searchable" placeholder="search">
+      <select>
+        <option> Sort by votes
+        <option> Sort by title
+        <option> Sort by date
+      </select>
+    </header>
+    <main>
+      <div ng-repeat="p in posts" class="post">
+        <div class="post__thumbnail">
+          <img ng-src="{{p.thumbnail}}" width="200" height="200" alt="" />
+        </div>
+        <div class="post__content">
+          <div class="post__header">
+            {{p.title}} |
+            <i class="fa fa-arrow-up"></i>
+            <i class="fa fa-arrow-down"></i>
+            {{ p.vote }}
+          </div>
+          <div class="post__author">
+            {{ p.author }}
+          </div>
+          <div class="post__text">
+            {{ p.text }}
+          </div>
+          <div class="post__footer">
+            <i class="fa fa-calendar"></i> date |
+            <i class="fa fa-comments"></i> comments |
+            <i class="fa fa-pencil"></i> add comment
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
