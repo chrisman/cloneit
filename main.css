@@ -5,3 +5,15 @@
 .downvoted {
   color: #F00;
 }
+
+.error {
+  color: #F00;
+  font-weight: bold;
+}
+
+input.ng-invalid {
+  border: 1px solid red;
+}
+input.ng-valid {
+  border: 1px solid green;
+}

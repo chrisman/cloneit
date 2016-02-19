@@ -1,4 +1,4 @@
-var app = angular.module('myapp', ['angularMoment']);
+var app = angular.module('myapp', ['angularMoment', 'ngAnimate']);
 
 app.controller('mycontroller', function($scope, $rootScope){
   
@@ -11,9 +11,10 @@ app.controller('mycontroller', function($scope, $rootScope){
   v.showForm = false;
   v.showComments = false;
   v.showCommentForm = false;
+  v.posts = [];
 
   // seed/test data //
-  var obj = {
+  var obj = [{
     title: "test title",
     time: new Date(),
     author: "chrisbrown",
@@ -24,22 +25,20 @@ app.controller('mycontroller', function($scope, $rootScope){
       {'author': 'cb', 'text': 'neato!'},
       {'author': 'alaska', 'text': 'is this food?'}
     ]
-  };
-  v.posts = [obj];
-
-  obj = {
+  },
+  {
     title: "another title",
     time: new Date(),
     author: "harper",
     vote: 0,
-    url: "https://media.giphy.com/media/l4KhVo1OrKsqgToeQ/giphy.gif",
+    url: "https://media.giphy.com/media/v7a9tri4q9wDS/giphy.gif",
     text: "Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic. Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini.",
     comments: [
-      {'author': 'cb', 'text': 'neato!'},
-      {'author': 'alaska', 'text': 'is this food?'}
+      {'author': 'pooper', 'text': 'crap'},
+      {'author': 'biden', 'text': 'wow oh wow oh wow oh owo'}
     ]
-  };
-  v.posts.push(obj);
+  }];
+  v.posts = obj;
   // end seed data //
 
   v.submitPost = function(){
@@ -50,6 +49,7 @@ app.controller('mycontroller', function($scope, $rootScope){
     obj.vote = 0;
     obj.url = v.post_url;
     obj.text = v.post_text;
+    obj.comments = [];
 
     v.posts.push(obj);
     v.showForm = false;
@@ -62,6 +62,8 @@ app.controller('mycontroller', function($scope, $rootScope){
     }
 
     p.comments.push(comment);
+    v.comment_author = null;
+    v.comment_text = null;
     p.showCommentForm = !p.showCommentForm;
     p.showComments = !p.showComments;;
     
@@ -72,7 +74,6 @@ app.controller('mycontroller', function($scope, $rootScope){
   }
 
 });
-
 
 $(document).ready(function(){
   $('#sortByVotes').attr('selected',true);
