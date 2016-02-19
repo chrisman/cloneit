@@ -1,12 +1,16 @@
 var app = angular.module('myapp', ['angularMoment']);
 
 app.controller('mycontroller', function($scope, $rootScope){
+  
+  // fixing inheritence //
+  $scope.view = {};
+  var v = $scope.view;
 
   // initial values //
-  $scope.sortBy = 'vote';
-  $scope.showForm = false;
-  $scope.showComments = false;
-  $scope.showCommentForm = false;
+  v.sortBy = 'vote';
+  v.showForm = false;
+  v.showComments = false;
+  v.showCommentForm = false;
 
   // seed/test data //
   var obj = {
@@ -21,7 +25,8 @@ app.controller('mycontroller', function($scope, $rootScope){
       {'author': 'alaska', 'text': 'is this food?'}
     ]
   };
-  $scope.posts = [obj];
+  v.posts = [obj];
+
   obj = {
     title: "another title",
     time: new Date(),
@@ -34,25 +39,42 @@ app.controller('mycontroller', function($scope, $rootScope){
       {'author': 'alaska', 'text': 'is this food?'}
     ]
   };
-  $scope.posts.push(obj);
+  v.posts.push(obj);
+  // end seed data //
 
-  $scope.submitPost = function(){}
+  v.submitPost = function(){
+    var obj = {};
+    obj.title = v.post_title;
+    obj.time = new Date();
+    obj.author = v.post_author;
+    obj.vote = 0;
+    obj.url = v.post_url;
+    obj.text = v.post_text;
 
-  $scope.submitComment = function(p){
+    v.posts.push(obj);
+    v.showForm = false;
+  }
+
+  v.submitComment = function(p){
     var comment = {
-      'author': $scope.comment_author,
-      'text': $scope.comment_text
+      'author': v.comment_author,
+      'text': v.comment_text
     }
 
-    console.log(p);
     p.comments.push(comment);
     p.showCommentForm = !p.showCommentForm;
     p.showComments = !p.showComments;;
     
   }
 
-  $scope.vote = function(p, i){
+  v.vote = function(p, i){
     p.vote += i;
   }
 
 });
+
+
+$(document).ready(function(){
+  $('#sortByVotes').attr('selected',true);
+});
+

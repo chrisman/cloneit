@@ -16,45 +16,45 @@
   <body ng-controller="mycontroller">
     <header>
       <h1>reddit clone</h1>
-      <button ng-click="toggleSubmitForm()"> <i class="fa fa-plus"></i> Submit Post </button>
-      <input type="text" ng-model="searchable" placeholder="search">
-      <select ng-model="sortBy">
-        <option value='-vote'> Sort by votes
-        <option value='title'> Sort by title
-        <option value='date'> Sort by date
+      <button ng-click="view.showForm = !view.showForm"> <i class="fa fa-plus"></i> Submit Post </button>
+      <input type="text" ng-model="view.searchable" placeholder="search">
+      <select ng-model="view.sortBy">
+        <option value='-vote' id="sortByVotes"> Sort by votes
+        <option value='title' id="sortByTitle"> Sort by title
+        <option value='date' id="sortByDate"> Sort by date
       </select>
     </header>
-    <div ng-show="showForm">
-      <form>
+    <div ng-show="view.showForm">
+      <form ng-submit="view.submitPost()">
         <label> Title
-          <p> <input type="text" ng-model="post_title" placeholder="post title">
+          <p> <input type="text" ng-model="view.post_title" placeholder="post title" required>
         </label>
         <p>
         <label> Author
-          <p> <input type="text" ng-model="post_author" placeholder="username">
+          <p> <input type="text" ng-model="view.post_author" placeholder="username" required>
         </label>
         <p>
         <label> Image URL
-          <p> <input type="text" ng-model="post_url" placeholder="http://www.example.com/lolwut.gif">
+          <p> <input type="text" ng-model="view.post_url" placeholder="http://www.example.com/lolwut.gif" required>
         </label>
         <p>
         <label> Description
-          <p> <input type="text" ng-model="post_text" placeholder="description">
+          <p> <input type="text" ng-model="view.post_text" placeholder="description" required>
         </label>
         <p>
-        <input ng-click="submitPost()" type="submit" value="Submit post">
+        <input type="submit" value="Submit post">
       </form>
     </div>
     <main>
-      <div ng-repeat="p in posts | orderBy:sortBy | filter:searchable" class="post">
+      <div ng-repeat="p in view.posts | orderBy:view.sortBy | filter:view.searchable" class="post">
         <div class="post__url">
           <img ng-src="{{p.url}}" width="200" height="200" alt="" />
         </div>
         <div class="post__content">
           <div class="post__header">
             {{p.title}} |
-            <span ng-click="vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
-            <span ng-click="vote(p, -1)"><i class="fa fa-arrow-down"></i></span>
+            <span ng-click="view.vote(p, 1)"><i class="fa fa-arrow-up"></i></span>
+            <span ng-click="view.vote(p, -1)"><i class="fa fa-arrow-down"></i></span>
             <span ng-class="{upvoted: p.vote > 0, downvoted: p.vote < 0}">{{ p.vote }}</span>
           </div>
           <div class="post__author">
@@ -74,12 +74,12 @@
             </li>
           </div> <!-- end post__comments //-->
           <div ng-show="showCommentForm" class="post__commentform">
-            <form ng-submit="submitComment(p)">
+            <form ng-submit="view.submitComment(p)">
               <label> Author
-                <input type="text" ng-model="comment_author" placeholder="username">
+                <input type="text" ng-model="view.comment_author" placeholder="username">
               </label>
               <label> Text
-                <input type="text" ng-model="comment_text" placeholder="comment text">
+                <input type="text" ng-model="view.comment_text" placeholder="comment text">
               </label>
               <input type="submit" value="Submit post">
             </form>
